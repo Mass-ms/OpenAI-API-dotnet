@@ -111,7 +111,7 @@ namespace OpenAI_API.Chat
 			ChatRequest req = new ChatRequest(RequestParameters);
 			req.Messages = _Messages.ToList();
 
-			var res = await _endpoint.CreateChatCompletionAsync(req);
+			var res = await _endpoint.CreateChatCompletionAsync(req).ConfigureAwait(false);
 			MostResentAPIResult = res;
 
 			if (res.Choices.Count > 0)

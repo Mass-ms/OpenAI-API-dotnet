@@ -47,7 +47,7 @@ namespace OpenAI_API.Chat
 		/// <returns>Asynchronously returns the completion result. Look in its <see cref="ChatResult.Choices"/> property for the results.</returns>
 		public async Task<ChatResult> CreateChatCompletionAsync(ChatRequest request)
 		{
-			return await HttpPost<ChatResult>(postData: request);
+			return await HttpPost<ChatResult>(postData: request).ConfigureAwait(false);
 		}
 
 		/// <summary>

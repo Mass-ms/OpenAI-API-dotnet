@@ -128,7 +128,7 @@ namespace OpenAI_API
 					req.Content = stringContent;
 				}
 			}
-			response = await client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
+			response = await client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
 			if (response.IsSuccessStatusCode)
 			{
@@ -138,7 +138,7 @@ namespace OpenAI_API
 			{
 				try
 				{
-					resultAsString = await response.Content.ReadAsStringAsync();
+					resultAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 				}
 				catch (Exception e)
 				{
@@ -159,6 +159,7 @@ namespace OpenAI_API
 				}
 			}
 		}
+
 
 		/// <summary>
 		/// Sends an HTTP Get request and return the string content of the response without parsing, and does error handling.
@@ -184,8 +185,8 @@ namespace OpenAI_API
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
 		private async Task<T> HttpRequest<T>(string url = null, HttpMethod verb = null, object postData = null) where T : ApiResultBase
 		{
-			var response = await HttpRequestRaw(url, verb, postData);
-			string resultAsString = await response.Content.ReadAsStringAsync();
+			var response = await HttpRequestRaw(url, verb, postData).ConfigureAwait(false);
+			string resultAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
 			var res = JsonConvert.DeserializeObject<T>(resultAsString);
 			try
@@ -204,6 +205,7 @@ namespace OpenAI_API
 
 			return res;
 		}
+
 
 		/*
 		/// <summary>
@@ -261,7 +263,7 @@ namespace OpenAI_API
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
 		internal async Task<T> HttpPost<T>(string url = null, object postData = null) where T : ApiResultBase
 		{
-			return await HttpRequest<T>(url, HttpMethod.Post, postData);
+			return await HttpRequest<T>(url, HttpMethod.Post, postData).ConfigureAwait(false);
 		}
 
 		/// <summary>
